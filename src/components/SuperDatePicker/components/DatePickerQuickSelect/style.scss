@@ -1,0 +1,106 @@
+.quick-select-menu {
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    min-width: 180px;
+    z-index: 100;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+
+    &-disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    &-error {
+        color: red;
+        font-size: 0.875rem;
+    }
+
+    .quick-select {
+        &-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        &-inputs {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        &-dropdown,
+        &-number,
+        &-units {
+            padding: 4px 8px;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background: white;
+            cursor: pointer;
+            outline: none;
+        }
+
+        &-number {
+            width: 60px;
+        }
+
+        &-confirm-btn {
+            padding: 4px 10px;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: #ddd;
+            }
+        }
+
+        &-divider {
+            height: 1px;
+            background-color: #ccc;
+            margin: 8px 0;
+        }
+
+        &-frequent-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        &-frequent-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px 12px;
+        }
+
+        &-item {
+            display: inline;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            color: #1a73e8;
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.2s ease, text-decoration 0.2s ease;
+
+            &:hover {
+                color: #155ab6;
+                text-decoration: none;
+            }
+        }
+
+    }
+
+
+}
