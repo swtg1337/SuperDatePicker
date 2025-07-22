@@ -24,6 +24,13 @@ type OnTimeChangeProps = {
     isInvalid: boolean
 }
 
+type DateFormatType =
+    | 'dd.MM.yyyy HH:mm'
+    | 'dd.MM.yyyy HH:mm:ss'
+    | 'dd.MM.yyyy'
+    | 'HH:mm:ss'
+    | 'dd.MM HH:mm'
+
 type SuperDatePickerProps = {
     initialStart?: Date
     initialEnd?: Date
@@ -34,7 +41,7 @@ type SuperDatePickerProps = {
     showQuickSelect?: boolean
     showUpdateButton?: boolean | 'iconOnly'
     updateButtonProps?: UpdateButtonProps
-    dateFormat?: string
+    dateFormat?: DateFormatType
 }
 
 const validateDateInput = (

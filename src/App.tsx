@@ -48,7 +48,7 @@ const handleTimeChange = ({ start, end, isInvalid }: { start: Date; end: Date; i
             <SuperDatePicker
                 updateButtonProps={{ fill: false }}
                 onTimeChange={handleTimeChange}
-                dateFormat="dd.MM.yyyy"
+                dateFormat="HH:mm:ss"
             />
         </div>
 )}
