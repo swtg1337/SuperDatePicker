@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react'
+import { type FC, useState, useCallback } from 'react'
 import {
     startOfToday,
     startOfYesterday,
@@ -28,8 +28,6 @@ type DatePickerQuickSelectProps = {
 }
 
 type PeriodNumberType = 'seconds' | 'minutes' | 'hours' | 'days' | 'months' | 'years'
-
-const now = new Date()
 
 const DatePickerQuickSelect: FC<DatePickerQuickSelectProps> = ({ onSelect, disabled }) => {
     const [periodDirection, setPeriodDirection] = useState<'last' | 'next'>('last')
@@ -77,6 +75,7 @@ const DatePickerQuickSelect: FC<DatePickerQuickSelectProps> = ({ onSelect, disab
 
     const handleCustomSelect = () => {
         const num = parseInt(periodNumber, 10)
+        const now = new Date()
 
         if (isNaN(num) || num < 1) {
             setError('Введите число больше 0')
@@ -99,13 +98,29 @@ const DatePickerQuickSelect: FC<DatePickerQuickSelectProps> = ({ onSelect, disab
         onSelect({ start, end })
     }
 
-    const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
+    const handleNumberChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value
+            if (value === '' || /^\d+$/.test(value)) {
+                setPeriodNumber(value)
+            }
+        },
+        []
+    )
 
-        if (value === '' || /^\d+$/.test(value)) {
-            setPeriodNumber(value)
-        }
-    }
+    const handleDirectionChange = useCallback(
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            setPeriodDirection(e.target.value as 'last' | 'next')
+        },
+        []
+    )
+
+    const handleUnitChange = useCallback(
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            setPeriodUnit(e.target.value as PeriodNumberType)
+        },
+        []
+    )
 
     return (
         <div className={`quick-select-menu ${disabled ? 'quick-select-menu-disabled' : ''}`}>
@@ -117,7 +132,7 @@ const DatePickerQuickSelect: FC<DatePickerQuickSelectProps> = ({ onSelect, disab
                     <select
                         className="quick-select-dropdown"
                         value={periodDirection}
-                        onChange={(e) => setPeriodDirection(e.target.value as 'last' | 'next')}
+                        onChange={handleDirectionChange}
                     >
                         <option value="last">Last</option>
                         <option value="next">Next</option>
@@ -134,7 +149,7 @@ const DatePickerQuickSelect: FC<DatePickerQuickSelectProps> = ({ onSelect, disab
                     <select
                         className="quick-select-units"
                         value={periodUnit}
-                        onChange={(e) => setPeriodUnit(e.target.value as PeriodNumberType)}
+                        onChange={handleUnitChange}
                     >
                         <option value="seconds">Seconds</option>
                         <option value="minutes">Minutes</option>
@@ -157,37 +172,87 @@ const DatePickerQuickSelect: FC<DatePickerQuickSelectProps> = ({ onSelect, disab
             <div className="quick-select-frequent-label">Commonly used</div>
 
             <div className="quick-select-frequent-list">
-                <div className="quick-select-item" onClick={() => onSelect({ start: startOfToday(), end: now })}>
-                    Today
-                </div>
                 <div
                     className="quick-select-item"
-                    onClick={() => onSelect({ start: startOfWeek(now, { weekStartsOn: 1 }), end: now })}
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfToday(), end: now })
+                    }}
+                >
+                    Today
+                </div>
+
+                <div
+                    className="quick-select-item"
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfWeek(now, { weekStartsOn: 1 }), end: now })
+                    }}
                 >
                     This week
                 </div>
-                <div className="quick-select-item" onClick={() => onSelect({ start: startOfMonth(now), end: now })}>
-                    This month
-                </div>
-                <div className="quick-select-item" onClick={() => onSelect({ start: startOfYear(now), end: now })}>
-                    This year
-                </div>
-                <div className="quick-select-item" onClick={() => onSelect({ start: startOfYesterday(), end: now })}>
-                    Yesterday
-                </div>
+
                 <div
                     className="quick-select-item"
-                    onClick={() => onSelect({ start: startOfWeek(now, { weekStartsOn: 1 }), end: now })}
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfMonth(now), end: now })
+                    }}
+                >
+                    This month
+                </div>
+
+                <div
+                    className="quick-select-item"
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfYear(now), end: now })
+                    }}
+                >
+                    This year
+                </div>
+
+                <div
+                    className="quick-select-item"
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfYesterday(), end: now })
+                    }}
+                >
+                    Yesterday
+                </div>
+
+                <div
+                    className="quick-select-item"
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfWeek(now, { weekStartsOn: 1 }), end: now })
+                    }}
                 >
                     Week to date
                 </div>
-                <div className="quick-select-item" onClick={() => onSelect({ start: startOfMonth(now), end: now })}>
+
+                <div
+                    className="quick-select-item"
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfMonth(now), end: now })
+                    }}
+                >
                     Month to date
                 </div>
-                <div className="quick-select-item" onClick={() => onSelect({ start: startOfYear(now), end: now })}>
+
+                <div
+                    className="quick-select-item"
+                    onClick={() => {
+                        const now = new Date()
+                        onSelect({ start: startOfYear(now), end: now })
+                    }}
+                >
                     Year to date
                 </div>
             </div>
+
         </div>
     )
 }

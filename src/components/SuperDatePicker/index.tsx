@@ -103,40 +103,40 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
 
 
     // подтверждение ввода в input для start
-    const handleConfirmStart = () => {
+    const handleConfirmStart = useCallback(() => {
         const { date, error: validationError } = validateDateInput(startInputValue, dateFormat, minDate, maxDate)
         setStartError(validationError ?? null)
         if (!validationError && date) {
             setStart(date)
             triggerOnTimeChangeSafely(date, end, null)
         }
-    }
+    }, [startInputValue, dateFormat, minDate, maxDate, end])
 
     // подтверждение ввода в input для end
-    const handleConfirmEnd = () => {
+    const handleConfirmEnd = useCallback(() => {
         const { date, error: validationError } = validateDateInput(endInputValue, dateFormat, minDate, maxDate)
         setEndError(validationError ?? null)
         if (!validationError && date) {
             setEnd(date)
             triggerOnTimeChangeSafely(start, date, null)
         }
-    }
+    }, [endInputValue, dateFormat, minDate, maxDate, start])
 
     // выбор в календаре для start
-    const handlePickStart = (date: Date) => {
+    const handlePickStart = useCallback((date: Date) => {
         setStart(date)
         setStartInputValue(format(date, dateFormat))
         setStartError(null)
         triggerOnTimeChangeSafely(date, end, startError)
-    }
+    }, [dateFormat, end, startError])
 
     // выбор в календаре для end
-    const handlePickEnd = (date: Date) => {
+    const handlePickEnd = useCallback((date: Date) => {
         setEnd(date)
         setEndInputValue(format(date, dateFormat))
         setEndError(null)
         triggerOnTimeChangeSafely(start, date, endError)
-    }
+    }, [dateFormat, start, endError])
 
     // проверка на start > end и на диапазон
     useEffect(() => {
@@ -156,7 +156,7 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
     }, [start, end, minDate, maxDate])
 
     // подтверждение выбора quick select или сэттинг ошибки диапазона при заданных minDate maxDate
-    const handleQuickSelect = ({ start, end }: { start: Date; end: Date }) => {
+    const handleQuickSelect = useCallback(({ start, end }: { start: Date; end: Date }) => {
         const isBeforeMin = minDate ? start < minDate || end < minDate : false
         const isAfterMax = maxDate ? start > maxDate || end > maxDate : false
         const isInvalid = isBeforeMin || isAfterMax
@@ -173,7 +173,7 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
         setEndInputValue(format(end, dateFormat))
 
         onTimeChange({ start, end, isInvalid })
-    }
+    }, [dateFormat, minDate, maxDate, onTimeChange])
 
     const handleButtonClick = () => {
         const isInvalid = (error || startError || endError) ? true : false

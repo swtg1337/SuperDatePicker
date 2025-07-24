@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react'
+import { type FC, useState, useCallback } from 'react'
 import * as Popover from '@radix-ui/react-popover'
 import DatePicker from 'react-datepicker'
 import { format } from 'date-fns'
@@ -33,6 +33,61 @@ const DatePickerPopoverField: FC<DatePickerPopoverFieldProps> = ({
 }) => {
     const [activeTab, setActiveTab] = useState<'absolute' | 'now'>('absolute')
 
+    const handleNowClick = useCallback(() => {
+        const now = new Date()
+        onPick(now)
+        onInputChange(format(now, dateFormat))
+        onConfirm()
+    }, [onPick, onInputChange, onConfirm, dateFormat])
+
+    const absoluteTabContent = (
+        <div className="super-datepicker-popup-content">
+            <DatePicker
+                selected={date}
+                inline
+                onChange={(date) => onPick(date as Date)}
+                showTimeSelect
+                timeFormat="HH:mm"
+                dateFormat={dateFormat}
+                minDate={minDate}
+                maxDate={maxDate}
+            />
+            <div className="super-datepicker-input-row">
+                <input
+                    type="text"
+                    value={inputValue}
+                    placeholder={`пример: ${dateFormat}`}
+                    onChange={(e) => onInputChange(e.target.value)}
+                    className={`super-datepicker-input ${error ? 'super-datepicker-input-error' : ''}`}
+                />
+                <button
+                    className="super-datepicker-confirm-btn"
+                    onClick={onConfirm}
+                >
+                    <MdOutlineDone />
+                </button>
+            </div>
+            {error && <div className="super-datepicker-error">{error}</div>}
+        </div>
+    )
+
+    const nowTabContent = (
+        <div className="super-datepicker-now-content">
+            <p>Setting the time to "now" means that on every refresh this time will be set to the time of the refresh.</p>
+
+            <div className="super-datepicker-now-wrapper">
+                <button
+                    className="super-datepicker-now-btn"
+                    onClick={handleNowClick}
+                    disabled={disabled}
+                >
+                    Set start date and time to now
+                </button>
+            </div>
+        </div>
+
+    )
+
     return (
         <Popover.Root>
             <Popover.Trigger asChild>
@@ -59,56 +114,7 @@ const DatePickerPopoverField: FC<DatePickerPopoverFieldProps> = ({
 
 
                     <div className="super-datepicker-popup-content">
-                        {activeTab === 'absolute' ? (
-                            <div className="super-datepicker-popup-content">
-                                <DatePicker
-                                    selected={date}
-                                    inline
-                                    onChange={(date) => onPick(date as Date)}
-                                    showTimeSelect
-                                    timeFormat="HH:mm"
-                                    dateFormat={dateFormat}
-                                    minDate={minDate}
-                                    maxDate={maxDate}
-                                />
-                                <div className="super-datepicker-input-row">
-                                    <input
-                                        type="text"
-                                        value={inputValue}
-                                        placeholder={`пример: ${dateFormat}`}
-                                        onChange={(e) => onInputChange(e.target.value)}
-                                        className={`super-datepicker-input ${error ? 'super-datepicker-input-error' : ''}`}
-                                    />
-                                    <button
-                                        className="super-datepicker-confirm-btn"
-                                        onClick={onConfirm}
-                                    >
-                                        <MdOutlineDone />
-                                    </button>
-                                </div>
-                                {error && <div className="super-datepicker-error">{error}</div>}
-                            </div>
-                        ) : (
-                            <div className="super-datepicker-now-content">
-                                <p>Setting the time to "now" means that on every refresh this time will be set to the time of the refresh.</p>
-
-                                <div className="super-datepicker-now-wrapper">
-                                    <button
-                                        className="super-datepicker-now-btn"
-                                        onClick={() => {
-                                            const now = new Date()
-                                            onPick(now)
-                                            onInputChange(format(now, dateFormat))
-                                            onConfirm()
-                                        }}
-                                        disabled={disabled}
-                                    >
-                                        Set start date and time to now
-                                    </button>
-                                </div>
-                            </div>
-
-                        )}
+                        {activeTab === 'absolute' ? absoluteTabContent : nowTabContent }
                     </div>
                 </Popover.Content>
             </Popover.Portal>
