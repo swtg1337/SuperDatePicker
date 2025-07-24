@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker'
 import { format } from 'date-fns'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import { MdOutlineDone } from '../../utils/icons.ts'
+import { MdOutlineDone as MdOutlineDoneIcon } from '../../utils/icons.ts'
 
 type DatePickerPopoverFieldProps = {
     date: Date | null
@@ -64,7 +64,7 @@ const DatePickerPopoverField: FC<DatePickerPopoverFieldProps> = ({
                     className="super-datepicker-confirm-btn"
                     onClick={onConfirm}
                 >
-                    <MdOutlineDone />
+                    <MdOutlineDoneIcon />
                 </button>
             </div>
             {error && <div className="super-datepicker-error">{error}</div>}

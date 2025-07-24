@@ -7,10 +7,10 @@ import DatePickerPopoverField from './components/DatePickerPopoverField'
 
 import './style.scss'
 import {
-    MdErrorOutline,
-    CiCalendar,
-    IoIosArrowDown,
-    IoIosArrowRoundForward,
+    MdErrorOutline as MdErrorOutlineIcon,
+    CiCalendar as CiCalendarIcon,
+    IoIosArrowDown as IoIosArrowDownIcon,
+    IoIosArrowRoundForward as IoIosArrowRoundForwardIcon,
 } from './utils/icons.ts'
 import DatePickerButton from './components/DatePickerButton'
 
@@ -192,8 +192,8 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
                         <Popover.Root>
                             <Popover.Trigger asChild>
                                 <div className="super-datepicker-quick-select">
-                                    <CiCalendar className="super-datepicker-calendar" />
-                                    <IoIosArrowDown />
+                                    <CiCalendarIcon className="super-datepicker-calendar" />
+                                    <IoIosArrowDownIcon />
                                 </div>
                             </Popover.Trigger>
                             <Popover.Portal>
@@ -220,7 +220,7 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
                         dateFormat={dateFormat}
                     />
 
-                    <IoIosArrowRoundForward className="super-datepicker-arrow" />
+                    <IoIosArrowRoundForwardIcon className="super-datepicker-arrow" />
 
                     <DatePickerPopoverField
                         date={end}
@@ -237,7 +237,7 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
 
                     {error &&
                         <div className="super-datepicker-error-icon-wrapper" data-tooltip={error}>
-                            <MdErrorOutline className="super-datepicker-error-icon" />
+                            <MdErrorOutlineIcon className="super-datepicker-error-icon" />
                         </div>
                     }
                 </div>

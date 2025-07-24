@@ -20,7 +20,7 @@ import {
 } from 'date-fns'
 
 import './style.scss'
-import { MdOutlineDone } from '../../utils/icons.ts'
+import { MdOutlineDone as MdOutlineDoneIcon } from '../../utils/icons.ts'
 
 type DatePickerQuickSelectProps = {
     onSelect: (range: { start: Date; end: Date }) => void
@@ -160,7 +160,7 @@ const DatePickerQuickSelect: FC<DatePickerQuickSelectProps> = ({ onSelect, disab
                     </select>
 
                     <button className="quick-select-confirm-btn" onClick={handleCustomSelect}>
-                        <MdOutlineDone />
+                        <MdOutlineDoneIcon />
                     </button>
                 </div>
 

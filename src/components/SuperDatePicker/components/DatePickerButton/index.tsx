@@ -1,6 +1,6 @@
 import { type FC } from 'react'
 
-import { LuRefreshCcw } from '../../utils/icons.ts'
+import { LuRefreshCcw as LuRefreshCcwIcon } from '../../utils/icons.ts'
 import './style.scss'
 
 type DatePickerButtonProps = {
@@ -19,7 +19,7 @@ const DatePickerButton: FC<DatePickerButtonProps> = ({ fill, show, disabled, onC
             onClick={onClick}
             disabled={disabled}
         >
-            <LuRefreshCcw />
+            <LuRefreshCcwIcon />
             {show !== 'iconOnly' && 'Refresh'}
         </button>
     )
