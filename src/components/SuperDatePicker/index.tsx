@@ -90,16 +90,20 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
     // вызов onTimeChange сразу если кнопка не передана
     const triggerOnTimeChangeSafely = useCallback(
         (nextStart: Date, nextEnd: Date, localError: string | null) => {
+            const validationError = localError || (nextStart > nextEnd ? 'Начальная дата не может быть больше чем конечная' : null)
+            setError(validationError)
+
             if (!shouldDeferUpdate) {
                 onTimeChange({
                     start: nextStart,
                     end: nextEnd,
-                    isInvalid: !!(localError || error),
-                })
+                    isInvalid: !!validationError,
+                });
             }
         },
-        [shouldDeferUpdate, error, onTimeChange]
+        [shouldDeferUpdate, onTimeChange]
     )
+
 
 
     // подтверждение ввода в input для start
@@ -110,7 +114,7 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
             setStart(date)
             triggerOnTimeChangeSafely(date, end, null)
         }
-    }, [startInputValue, dateFormat, minDate, maxDate, end])
+    }, [startInputValue, dateFormat, minDate, maxDate, end, triggerOnTimeChangeSafely])
 
     // подтверждение ввода в input для end
     const handleConfirmEnd = useCallback(() => {
@@ -120,23 +124,23 @@ export const SuperDatePicker: FC<SuperDatePickerProps> = ({
             setEnd(date)
             triggerOnTimeChangeSafely(start, date, null)
         }
-    }, [endInputValue, dateFormat, minDate, maxDate, start])
+    }, [endInputValue, dateFormat, minDate, maxDate, start, triggerOnTimeChangeSafely])
 
     // выбор в календаре для start
     const handlePickStart = useCallback((date: Date) => {
         setStart(date)
         setStartInputValue(format(date, dateFormat))
-        setStartError(null)
+
         triggerOnTimeChangeSafely(date, end, startError)
-    }, [dateFormat, end, startError])
+    }, [dateFormat, end, startError, triggerOnTimeChangeSafely])
 
     // выбор в календаре для end
     const handlePickEnd = useCallback((date: Date) => {
         setEnd(date)
         setEndInputValue(format(date, dateFormat))
-        setEndError(null)
+
         triggerOnTimeChangeSafely(start, date, endError)
-    }, [dateFormat, start, endError])
+    }, [dateFormat, start, endError, triggerOnTimeChangeSafely])
 
     // проверка на start > end и на диапазон
     useEffect(() => {
